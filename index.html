@@ -6,10 +6,7 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 </head>
 <body ng-app="testApp">
-<div ng-controller="issuesController">
-	<p>{{name}}</p>
-	<input ng-model="name">
-</div>
+<ng-view></ng-view>
 <script>
 	var app = angular.module('testApp', [])
 
@@ -19,9 +16,9 @@
 					controller: "issuesController",
 					templateUrl: "Partials/View1.html"
 				})
-				.when('/partial2',{
+				.when('/view2',{
 					controller: "issuesController",
-					templateUrl: "Partials/View1.html"
+					templateUrl: "Partials/View2.html"
 				})
 				.otherwise({redirectTo: "/"})
 	})
