@@ -1,3 +1,7 @@
-<div>view1 {{name}}</div>
-<input ng-model="name">
-		<a href="#/view2">view2</a>
+
+<a href="#/view2">view2</a>
+
+
+<ul>
+	<li ng-repeat="customer in customers">{{ customer.name }} {{ customer.city }}</li>
+</ul>
