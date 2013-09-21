@@ -23,7 +23,7 @@
 				.otherwise({redirectTo: "/"})
 	})
 
-	app.service('simpleFactory', function(){
+	app.service('simpleService', function(){
 	    var customers = [
 		    {name: "n1", city: "c1"},
 		    {name: "n2", city: "c2"},
@@ -36,7 +36,7 @@
 		}
 	})
 
-	app.controller("issuesController", function($scope, simpleFactory){
+	app.controller("issuesController", function($scope, simpleService){
 		$scope.customers = simpleFactory.getCustomers()
 	})
 
