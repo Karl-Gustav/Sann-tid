@@ -13,25 +13,31 @@ class QuestionHandler(webapp.RequestHandler):
 	@httpCode
 	def put(self, placeholder): #create
 		questionModel = QuestionModel()
-		body = json.loads(self.request.body)
-		logging.info("test"+ str(self.request))
-		questionModel.question = body['question'] or raise400('Question can\'t be empty!')
-		questionModel.answer = body['answer'] or raise400('Question can\'t be empty!')
+		if 'application/json' in self.request.headers['Content-Type'].lower():
+			body = json.loads(self.request.body)
+		elif 'application/x-www-form-urlencoded' in self.request.headers['Content-Type'].lower():
+			body = self.request
+		else:
+			raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
+
+		questionModel.question = body.get('question') or raise400('Question can\'t be empty!')
+		questionModel.answer = body.get('answer') or raise400('Question can\'t be empty!')
 		questionModel.put()
 
 		self.response.out.write(questionModel.toJSON())
 
 	@httpCode
 	def post(self, questionId): #update
-		logging.info("test2"+str(self.request))
 		questionModel = QuestionModel.get(questionId.strip())
-		if self.request.headers['Content-Type'] == 'application/json':
+		if 'application/json' in self.request.headers['Content-Type'].lower():
 			body = json.loads(self.request.body)
-			questionModel.question = body['question'] or raise400('Question can\'t be empty!')
-			questionModel.answer = body['answer'] or raise400('Question can\'t be empty!')
-		elif self.request.headers['Content-Type'] == 'application/x-www-form-urlencoded':
-			questionModel.question = self.request.get('question') or raise400('Question can\'t be empty!')
-			questionModel.answer = self.request.get('answer') or raise400('Question can\'t be empty!')
+		elif 'application/x-www-form-urlencoded' in self.request.headers['Content-Type'].lower():
+			body = self.request
+		else:
+			raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
+
+		questionModel.question = body.get('question') or raise400('Question can\'t be empty!')
+		questionModel.answer = body.get('answer') or raise400('Question can\'t be empty!')
 		questionModel.put()
 		self.response.out.write(questionModel.toJSON())
 
