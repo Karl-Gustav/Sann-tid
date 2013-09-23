@@ -1,0 +1,28 @@
+application: our-lists
+version: v1-4-1
+runtime: python27
+api_version: 1
+threadsafe: true
+default_expiration: "10d"
+
+handlers:
+- url: /favicon.ico
+  static_files: html/images/favicon.ico
+  upload: html/images/favicon.ico
+
+- url: /css
+  static_dir: html/css
+
+- url: /scripts
+  static_dir: javascript
+  
+- url: /images
+  static_dir: html/images
+  
+- url: /
+  static_files: html/OurList.html
+  upload: html/OurList.html
+  login: required
+  
+- url: /.*
+  script: main.app

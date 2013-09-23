@@ -1,0 +1,92 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+	background-color: #BACFE4;
+	color: #333;
+	font-size: 100%;
+	font-family: Georgia, serif;
+}
+.content {
+	word-wrap: break-word;
+	width: 300;
+}
+h1 {
+	font-size: 144%;
+	font-family: Arial, sans-serif;
+}
+#head {	
+	background-color: #82A9D0;
+	margin:0; 
+	padding:0; 
+	width: 300;
+	height: 50px;
+	text-align: center;
+}
+#addUserDiv{
+	background-color: #454F8C;
+	width: 300;
+	color: #ACA0A0;
+	display: none;
+}
+.tasks{
+	padding-left: 0px;
+}
+.taskContent {
+	display: none;
+}
+
+#taskList {
+	padding-top: 10px;
+}
+
+.hiddenLink {
+	color:#000;
+	text-decoration:none;
+}
+.taskDiv {	
+	padding: 5px; 
+	clear: both;
+}
+#checkboxImage{
+	vertical-align: middle;
+}
+#metadataLink{
+	float:right;
+}
+.listContent{
+	background-color: #A7F095;
+}
+#loading {
+	display: none;
+	float: left;
+	text-align: center;
+}
+.stdUl li{
+	padding-bottom: 5px;
+}
+
+img{
+	margin: 5px 5px 5px 5px;
+}
+
+img.minus{
+	margin: 0px 10px 0px 0px;
+}
+input.inputText{
+	width: 250px;
+}
+
+input.settingsInput{
+	width: 180px;
+}
+
+/*iPhone CSS:*/
+@media only screen and (max-device-width: 480px) {
+	body { 
+	}  
+}  
+input[type='text'],input[type='number'],textarea {font-size:16px;}
+

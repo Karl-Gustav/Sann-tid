@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="STYLESHEET" href="/css/style.css" type="text/css">
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+<meta name="viewport" content="width=320px,initial-scale=1,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Our lists</title>
+</head>
+<body>
+<div class="content">
+	<div id="head">
+		<img id="showLists" src="/images/list.png" style="float: left;"/>
+		<div id="taskControls">
+			<img src="/images/settings.png" align="top" id="showAddUserDivBtn" style="float: right;"/>
+			<img src="/images/refresh.png" align="top" id="updateTasks" style="float: right;"/>
+		</div>
+		<a href="#" id="showLists" class="hiddenLink"><h3>Your lists:</h3></a>
+	</div>
+	<div id="messages"></div>
+	<div class="listContent">
+	<h3>Your lists:</h3>
+		<form id="newListFrom">
+			<input type="text" name="listName"/>
+			<input type="submit" value="Create"/>
+		</form>
+		<table id="Lists"></table>
+	</div>
+	<div class="taskContent">
+		<div>
+			<textarea name="text" id="newTaskFormText" style="height:23px;width:85%;"></textarea>
+			<img src="/images/plus.png" id="newTaskBtn" alt="Create item" style="vertical-align: top"/>
+		</div>
+		<img id="deleteCompleatedTasks" src="/images/trash.png">
+		<div id="addUserDiv">
+			<img src="/images/exit.png" id="logoutBtn" style="float: right;">
+			<img src="/images/delete_list.png" id="delListBtn" style="float: right;">
+			<label>Change list name:</label>
+			<form id="changeListNameForm">
+				<input type="text" class="settingsInput"" name="newName"/>
+				<input type="image" src="/images/green_right_arraw.png" alt="Add" align="middle" />
+			</form>
+			<label>Add user to list:</label>
+			<form id="addUserForm">
+				<input type="text" class="settingsInput" name="email"/>
+				<input type="image" src="/images/user_add.png" alt="Add" align="middle" />
+			</form>
+			<ul id="addUserList" class="stdUl"></ul>
+		</div>
+		<div id="taskList" style="clear: both;" class="tasks"></div>
+		</div>
+	</div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<!--script type="text/javascript" src="/scripts/jquery.ba-hashchange.min.js"></script-->
+<script type="text/javascript" src="/scripts/jquery.dateFormat-1.0.js"></script>
+<script type="text/javascript" src="/scripts/timeUtil.js"></script>
+<script type="text/javascript" src="/scripts/customGetUrlVar.js"></script>
+<script type="text/javascript" src="/scripts/tasks.js"></script>
+<script type="text/javascript" src="/scripts/lists.js"></script>
+<script type="text/javascript" src="/scripts/users.js"></script>
+<script type="text/javascript" src="/scripts/viewControl.js"></script>
+<script type="text/javascript" src="/scripts/responseProcessing.js"></script>
+<script type="text/javascript" src="/scripts/lib/jquery.autosize-min.js"></script>
+</body>
+</html>
