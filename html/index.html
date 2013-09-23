@@ -14,11 +14,11 @@
 		$routeProvider
 				.when('/',{
 					controller: "issuesController",
-					templateUrl: "Partials/View1.html"
+					templateUrl: "partials/View1.html"
 				})
 				.when('/view2',{
 					controller: "issuesController",
-					templateUrl: "Partials/View2.html"
+					templateUrl: "partials/View2.html"
 				})
 				.otherwise({redirectTo: "/"})
 	})
@@ -37,7 +37,8 @@
 	})
 
 	app.controller("issuesController", function($scope, simpleService){
-		$scope.customers = simpleFactory.getCustomers()
+		$scope.customers = simpleService .getCustomers()
+		$scope.customers.push({name:"test", city: "test2"})
 	})
 
 
