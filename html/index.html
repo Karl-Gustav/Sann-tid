@@ -3,12 +3,13 @@
 <head>
 	<title></title>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.min.js"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 </head>
 <body ng-app="testApp">
 <ng-view></ng-view>
 <script>
-	var app = angular.module('testApp', [])
+	var app = angular.module('testApp', ['ngResource'])
 
 	app.config(function($routeProvider){
 		$routeProvider
@@ -24,21 +25,31 @@
 	})
 
 	app.service('simpleService', function(){
-	    var customers = [
-		    {name: "n1", city: "c1"},
-		    {name: "n2", city: "c2"},
-		    {name: "n3", city: "c3"},
-		    {name: "n4", city: "c4"}
-	    ]
+		var customers = [
+			{name: "n1", city: "c1"},
+			{name: "n2", city: "c2"},
+			{name: "n3", city: "c3"},
+			{name: "n4", city: "c4"}
+		]
 
 		this.getCustomers = function(){
-		    return customers
+			return customers
 		}
 	})
 
-	app.controller("issuesController", function($scope, simpleService){
-		$scope.customers = simpleService .getCustomers()
-		$scope.customers.push({name:"test", city: "test2"})
+	app.service('questionService', function($resource){
+
+		var questionResource = $resource('/rest/questions/:id', {id:'@id'})
+
+		this.getQuestionResource = function(){
+			return questionResource
+		}
+	})
+
+	app.controller("issuesController", function($scope, simpleService, questionService){
+		$scope.customers = simpleService.getCustomers()
+		$scope.questions = questionService.getQuestionResource()
+		console.log("questionService.getQuestionResource()", questionService.getQuestionResource())
 	})
 
 
