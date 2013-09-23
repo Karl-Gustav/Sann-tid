@@ -4,14 +4,16 @@ import logging
 from lib.models import QuestionModel
 import json
 from lib.decorators import httpCode
-from lib.HTTPExceptions import raise400, HTTP409
+from lib.HTTPExceptions import raise400, HTTP404
 
 class QuestionHandler(webapp.RequestHandler):
 	def get(self, placeholder): #get
+		if placeholder: raise HTTP404()
 		self.response.out.write( "[%s]" % ",".join(x.toJSON() for x in QuestionModel.all() ) )
 
 	@httpCode
 	def put(self, placeholder): #create
+		if placeholder: raise HTTP404()
 		questionModel = QuestionModel()
 		if 'application/json' in self.request.headers['Content-Type'].lower():
 			body = json.loads(self.request.body)
