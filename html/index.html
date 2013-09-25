@@ -37,19 +37,14 @@
 		}
 	})
 
-	app.service('questionService', function($resource){
-
-		var questionResource = $resource('/rest/questions/:id', {id:'@id'})
-
-		this.getQuestionResource = function(){
-			return questionResource
-		}
+	app.factory('questionService', function($resource){
+		return $resource('/rest/questions/:id', {id:'@id'})
 	})
 
 	app.controller("issuesController", function($scope, simpleService, questionService){
 		$scope.customers = simpleService.getCustomers()
 
-		console.log("questionService.getQuestionResource()", questionService.getQuestionResource().query(function(data){
+		console.log("questionService.getQuestionResource()", questionService.query(function(data){
 		    console.log("data", data)
 			$scope.questions = data
 		}))
