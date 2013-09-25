@@ -48,9 +48,10 @@
 
 	app.controller("issuesController", function($scope, simpleService, questionService){
 		$scope.customers = simpleService.getCustomers()
-		$scope.questions = questionService.getQuestionResource()
-		console.log("questionService.getQuestionResource()", questionService.getQuestionResource().get({id:"ag1kZXZ-b3VyLWxpc3RzchoLEg1RdWVzdGlvbk1vZGVsGICAgICAgMAKDA"}, function(data){
+
+		console.log("questionService.getQuestionResource()", questionService.getQuestionResource().query(function(data){
 		    console.log("data", data)
+			$scope.questions = data
 		}))
 	})
 
