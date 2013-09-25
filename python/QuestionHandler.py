@@ -7,9 +7,11 @@ from lib.decorators import httpCode
 from lib.HTTPExceptions import raise400, HTTP404
 
 class QuestionHandler(webapp.RequestHandler):
-	def get(self, placeholder): #get
-		if placeholder: raise HTTP404()
-		self.response.out.write( "[%s]" % ",".join(x.toJSON() for x in QuestionModel.all() ) )
+	def get(self, id): #get
+		if id:
+			self.response.out.write( QuestionModel.get(id).toJSON() )
+		else:
+			self.response.out.write( "[%s]" % ",".join(x.toJSON() for x in QuestionModel.all() ) )
 
 	@httpCode
 	def put(self, placeholder): #create
