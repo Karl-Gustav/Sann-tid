@@ -14,7 +14,7 @@ class QuestionHandler(webapp.RequestHandler):
 			self.response.out.write( "[%s]" % ",".join(x.toJSON() for x in QuestionModel.all() ) )
 
 	@httpCode
-	def put(self, placeholder): #create
+	def post(self, placeholder): #create
 		if placeholder: raise HTTP404()
 		questionModel = QuestionModel()
 		if 'application/json' in self.request.headers['Content-Type'].lower():
@@ -31,7 +31,7 @@ class QuestionHandler(webapp.RequestHandler):
 		self.response.out.write(questionModel.toJSON())
 
 	@httpCode
-	def post(self, questionId): #update
+	def put(self, questionId): #update
 		questionModel = QuestionModel.get(questionId.strip())
 		if 'application/json' in self.request.headers['Content-Type'].lower():
 			body = json.loads(self.request.body)

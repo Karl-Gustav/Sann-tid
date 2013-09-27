@@ -7,7 +7,9 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 </head>
 <body ng-app="testApp">
+<h1>Questions app</h1>
 <ng-view></ng-view>
+<footer>Made by me</footer>
 <script>
 	var app = angular.module('testApp', ['ngResource'])
 
@@ -18,14 +20,14 @@
 					templateUrl: "partials/showQuestions.html"
 				})
 				.when('/addQuestion',{
-					controller: "showQuestionsController",
+					controller: "addQuestionsController",
 					templateUrl: "partials/addQuestion.html"
 				})
 				.otherwise({redirectTo: "/"})
 	})
 
 	app.factory('questionService', function($resource){
-		return $resource('/rest/questions/:id', {id:'@id'})
+		return $resource('/rest/questions/:id', {})
 	})
 
 	app.controller("showQuestionsController", function($scope, questionService){
@@ -34,6 +36,21 @@
 		    console.log("data", data)
 			$scope.questions = data
 		})
+	})
+
+
+	app.controller("addQuestionsController", function($scope, questionService){
+		$scope.saveQuestion = function(){
+			console.log("inside saveQuestion")
+			var question = new questionService({
+				question: $scope.question,
+				answer: $scope.answer
+			})
+
+			console.log("question", question)
+			question.$save()
+
+		}
 	})
 
 
