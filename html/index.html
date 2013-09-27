@@ -14,12 +14,12 @@
 	app.config(function($routeProvider){
 		$routeProvider
 				.when('/',{
-					controller: "issuesController",
-					templateUrl: "partials/View1.html"
+					controller: "showQuestionsController",
+					templateUrl: "partials/showQuestions.html"
 				})
-				.when('/view2',{
-					controller: "issuesController",
-					templateUrl: "partials/View2.html"
+				.when('/addQuestion',{
+					controller: "showQuestionsController",
+					templateUrl: "partials/addQuestion.html"
 				})
 				.otherwise({redirectTo: "/"})
 	})
@@ -41,8 +41,7 @@
 		return $resource('/rest/questions/:id', {id:'@id'})
 	})
 
-	app.controller("issuesController", function($scope, simpleService, questionService){
-		$scope.customers = simpleService.getCustomers()
+	app.controller("showQuestionsController", function($scope, questionService){
 
 		console.log("questionService.getQuestionResource()", questionService.query(function(data){
 		    console.log("data", data)
