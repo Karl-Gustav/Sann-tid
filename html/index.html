@@ -24,19 +24,6 @@
 				.otherwise({redirectTo: "/"})
 	})
 
-	app.service('simpleService', function(){
-		var customers = [
-			{name: "n1", city: "c1"},
-			{name: "n2", city: "c2"},
-			{name: "n3", city: "c3"},
-			{name: "n4", city: "c4"}
-		]
-
-		this.getCustomers = function(){
-			return customers
-		}
-	})
-
 	app.factory('questionService', function($resource){
 		return $resource('/rest/questions/:id', {id:'@id'})
 	})
