@@ -43,7 +43,10 @@ def parseRequestAndSaveToQuestionModel(request, questionModel):
 	else:
 		raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
 
-	questionModel.text = body.get('text') or raise400('"text" can\'t be empty!')
-	questionModel.answer = body.get('answer') or raise400('"answer" can\'t be empty!')
-	questionModel.waitUntil = body.get('waitUntil') or raise400('"waitUntil" can\'t be empty!')
+	questionModel.text = getRequestBodyArgument(body, 'text')
+	questionModel.answer = getRequestBodyArgument(body, 'answer')
+	questionModel.waitUntil = getRequestBodyArgument(body, 'waitUntil')
 	questionModel.put()
+
+def getRequestBodyArgument(body, argument):
+	return body.get(argument) or raise400('"%s" can\'t be empty!' % argument)
