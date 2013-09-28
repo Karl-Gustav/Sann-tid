@@ -19,4 +19,4 @@ class Parrent(db.Model):
 class QuestionModel(Parrent):
 	question = db.StringProperty()
 	answer = db.StringProperty()
-	waitUntil = db.DateTimeProperty()
+	waitUntil = db.StringProperty()
