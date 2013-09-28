@@ -41,7 +41,7 @@ def parseRequestAndSaveToQuestionModel(request, questionModel):
 	elif 'application/x-www-form-urlencoded' in request.headers['Content-Type'].lower():
 		body = request
 	else:
-		raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
+		raise400('Only Content-Types allowed is application/json or application/x-www-form-urlencoded!')
 
 	questionModel.text = getRequestBodyArgument(body, 'text')
 	questionModel.answer = getRequestBodyArgument(body, 'answer')
