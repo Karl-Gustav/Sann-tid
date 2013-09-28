@@ -5,7 +5,6 @@ from lib.models import QuestionModel
 import json
 from lib.decorators import httpCode
 from lib.HTTPExceptions import raise400, HTTP404
-import lib.dateutil.parser as dateParser
 
 class QuestionHandler(webapp.RequestHandler):
 	def get(self, id): #get
@@ -25,7 +24,7 @@ class QuestionHandler(webapp.RequestHandler):
 		else:
 			raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
 
-		questionModel.question = body.get('question') or raise400('"question" can\'t be empty!')
+		questionModel.text = body.get('text') or raise400('"text" can\'t be empty!')
 		questionModel.answer = body.get('answer') or raise400('"answer" can\'t be empty!')
 		questionModel.waitUntil = body.get('waitUntil') or raise400('"waitUntil" can\'t be empty!')
 		questionModel.put()
@@ -41,7 +40,7 @@ class QuestionHandler(webapp.RequestHandler):
 		else:
 			raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
 
-		questionModel.question = body.get('question') or raise400('"question" can\'t be empty!')
+		questionModel.text = body.get('text') or raise400('"text" can\'t be empty!')
 		questionModel.answer = body.get('answer') or raise400('"answer" can\'t be empty!')
 		questionModel.waitUntil = body.get('waitUntil') or raise400('"waitUntil" can\'t be empty!')
 		questionModel.put()

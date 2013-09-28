@@ -17,6 +17,6 @@ class Parrent(db.Model):
 		return jsonString
 	
 class QuestionModel(Parrent):
-	question = db.StringProperty()
+	text = db.StringProperty()
 	answer = db.StringProperty()
 	waitUntil = db.StringProperty()

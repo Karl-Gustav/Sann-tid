@@ -46,7 +46,7 @@
 
 			console.log("inside saveQuestion")
 			var question = new questionService({
-				question: $scope.question,
+				text: $scope.questionText,
 				answer: $scope.answer,
 				waitUntil: Date.create().toISOString()
 			})
