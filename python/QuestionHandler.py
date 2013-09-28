@@ -15,37 +15,35 @@ class QuestionHandler(webapp.RequestHandler):
 
 	@httpCode
 	def post(self, placeholder): #create
-		if placeholder: raise HTTP404()
+		if placeholder:
+			raise HTTP404()
 		questionModel = QuestionModel()
-		if 'application/json' in self.request.headers['Content-Type'].lower():
-			body = json.loads(self.request.body)
-		elif 'application/x-www-form-urlencoded' in self.request.headers['Content-Type'].lower():
-			body = self.request
-		else:
-			raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
 
-		questionModel.text = body.get('text') or raise400('"text" can\'t be empty!')
-		questionModel.answer = body.get('answer') or raise400('"answer" can\'t be empty!')
-		questionModel.waitUntil = body.get('waitUntil') or raise400('"waitUntil" can\'t be empty!')
-		questionModel.put()
+		parseRequestAndSaveToQuestionModel(self.request, questionModel)
+
 		self.response.out.write(questionModel.toJSON())
 
 	@httpCode
 	def put(self, questionId): #update
 		questionModel = QuestionModel.get(questionId.strip())
-		if 'application/json' in self.request.headers['Content-Type'].lower():
-			body = json.loads(self.request.body)
-		elif 'application/x-www-form-urlencoded' in self.request.headers['Content-Type'].lower():
-			body = self.request
-		else:
-			raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
 
-		questionModel.text = body.get('text') or raise400('"text" can\'t be empty!')
-		questionModel.answer = body.get('answer') or raise400('"answer" can\'t be empty!')
-		questionModel.waitUntil = body.get('waitUntil') or raise400('"waitUntil" can\'t be empty!')
-		questionModel.put()
+		parseRequestAndSaveToQuestionModel(self.request, questionModel)
+
 		self.response.out.write(questionModel.toJSON())
 
 	def delete(self, questionId):
 		db.delete(questionId)
 		self.response.set_status(200)
+
+def parseRequestAndSaveToQuestionModel(request, questionModel):
+	if 'application/json' in request.headers['Content-Type'].lower():
+		body = json.loads(request.body)
+	elif 'application/x-www-form-urlencoded' in request.headers['Content-Type'].lower():
+		body = request
+	else:
+		raise400('Only Content-Types alowed is application/json or application/x-www-form-urlencoded!')
+
+	questionModel.text = body.get('text') or raise400('"text" can\'t be empty!')
+	questionModel.answer = body.get('answer') or raise400('"answer" can\'t be empty!')
+	questionModel.waitUntil = body.get('waitUntil') or raise400('"waitUntil" can\'t be empty!')
+	questionModel.put()
