@@ -46,6 +46,8 @@ def parseRequestAndSaveToQuestionModel(request, questionModel):
 	questionModel.text = getRequestBodyArgument(body, 'text')
 	questionModel.answer = getRequestBodyArgument(body, 'answer')
 	questionModel.waitUntil = getRequestBodyArgument(body, 'waitUntil')
+	questionModel.difficulty = body.get('difficulty') or "hard"
+
 	questionModel.put()
 
 def getRequestBodyArgument(body, argument):

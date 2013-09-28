@@ -20,3 +20,4 @@ class QuestionModel(Parrent):
 	text = db.StringProperty()
 	answer = db.StringProperty()
 	waitUntil = db.StringProperty()
+	difficulty = db.StringProperty(choices=set(["hard", "medium", "easy"]))
