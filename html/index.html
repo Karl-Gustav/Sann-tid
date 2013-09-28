@@ -17,8 +17,8 @@
 	app.config(function($routeProvider){
 		$routeProvider
 				.when('/',{
-					controller: "showQuestionsController",
-					templateUrl: "partials/showQuestions.html"
+					controller: "showAllQuestionsController",
+					templateUrl: "partials/showAllQuestions.html"
 				})
 				.when('/addQuestion',{
 					controller: "addQuestionsController",
@@ -31,7 +31,7 @@
 		return $resource('/rest/questions/:id', {})
 	})
 
-	app.controller("showQuestionsController", function($scope, questionService){
+	app.controller("showAllQuestionsController", function($scope, questionService){
 
 		questionService.query(function(data){
 		    console.log("data", data)
