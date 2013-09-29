@@ -63,6 +63,13 @@
 			$scope.question = data
 		})
 
+		$scope.finishQuestion = function(difficutly){
+			var question = $scope.question
+
+			question.difficulty = difficutly
+			question.$update()
+		}
+
 	})
 
 
