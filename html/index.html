@@ -11,6 +11,7 @@
 <h1>Questions app</h1>
 <ul>
 	<li><a href="#/addQuestion">Add question</a></li>
+	<li><a href="#/showQuestion">Show a question</a></li>
 	<li><a href="#/showAllQuestions">Show all questions</a><br /></li>
 </ul>
 <ng-view></ng-view>
@@ -23,6 +24,10 @@
 				.when('/',{
 					controller: "showAllQuestionsController",
 					templateUrl: "partials/showAllQuestions.html"
+				})
+				.when('/showQuestion',{
+					controller: "showQuestionController",
+					templateUrl: "partials/showQuestion.html"
 				})
 				.when('/addQuestion',{
 					controller: "addQuestionsController",
@@ -38,9 +43,22 @@
 	app.controller("showAllQuestionsController", function($scope, questionService){
 
 		questionService.query(function(data){
-		    console.log("data", data)
+			console.log("data", data)
 			$scope.questions = data
 		})
+	})
+
+	app.controller("showQuestionController", function($scope, questionService){
+
+		function getRandomQuestion(callback){
+			questionService.query(function(data){
+				callback(data[0])
+			})
+		}
+		getRandomQuestion(function(data){
+			$scope.question = data
+		})
+
 	})
 
 
