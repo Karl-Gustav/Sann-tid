@@ -37,7 +37,11 @@
 	})
 
 	app.factory('questionService', function($resource){
-		return $resource('/rest/questions/:id', {})
+		return $resource('/rest/questions/:id', {id:'@id'}, {
+			update: {
+				method: 'PUT'
+			}
+		})
 	})
 
 	app.controller("showAllQuestionsController", function($scope, questionService){
