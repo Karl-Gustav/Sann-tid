@@ -17,7 +17,9 @@
 <ng-view></ng-view>
 <footer>Made by me</footer>
 <script>
-	var app = angular.module('testApp', ['ngResource'])
+	var app = angular.module('testApp', ['ngResource']),
+		questionSetSize = 5
+
 
 	app.config(function($routeProvider){
 		$routeProvider
@@ -53,10 +55,27 @@
 	})
 
 	app.controller("showQuestionController", function($scope, questionService){
-
 		function getRandomQuestion(callback){
-			questionService.query(function(data){
-				callback(data[0])
+			questionService.query(function(questions){
+				var hard = questions.filter(function(question){
+							return question.difficulty == "hard"
+						}),
+					medium = questions.filter(function(question){
+							return question.difficulty == "medium"
+						}),
+					easy = questions.filter(function(question){
+							return question.difficulty == "easy"
+						}),
+					all = hard.add(medium).add(easy)
+
+				if (all.length >= questionSetSize){
+					return all.at(0, questionSetSize)[0]
+				} else {
+					return all[0]
+				}
+
+
+
 			})
 		}
 		getRandomQuestion(function(data){
@@ -90,7 +109,6 @@
 			$scope.addedQuestions.push(question)
 		}
 	})
-
 
 
 </script>

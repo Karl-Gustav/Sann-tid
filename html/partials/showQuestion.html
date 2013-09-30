@@ -4,9 +4,10 @@
 Question:{{ question.text }}<br />
 <div ng-show="!show">
 <button ng-click="show=!show" ng-model="show">toggle hide/show</button></div>
-<div ng-show="show">{{ question.answer }}<button type="button" ng-click="finishQuestion('easy')">Easy</button>
-	<button type="button" ng-click="finishQuestion('medium')">Medium</button>
-	<button type="button" ng-click="finishQuestion('hard')">Hard</button></div>
+<div ng-show="show">{{ question.answer }}<br />
+<button type="button" ng-click="finishQuestion('easy')">Easy</button>
+<button type="button" ng-click="finishQuestion('medium')">Medium</button>
+<button type="button" ng-click="finishQuestion('hard')">Hard</button></div>
 
 
 
