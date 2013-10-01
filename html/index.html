@@ -8,108 +8,29 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 </head>
 <body ng-app="testApp">
-<h1>Questions app</h1>
-<ul>
-	<li><a href="#/addQuestion">Add question</a></li>
-	<li><a href="#/showQuestion">Show a question</a></li>
-	<li><a href="#/showAllQuestions">Show all questions</a><br /></li>
-</ul>
-<ng-view></ng-view>
-<footer>Made by me</footer>
+<div ng-controller="issuesController">
+	<ul>
+		<li ng-repeat="d in data">{{d}}</li>
+	</ul>
+	<input ng-model="name">
+</div>
 <script>
-	var app = angular.module('testApp', ['ngResource']),
-		questionSetSize = 5
+	var app = angular.module('testApp', ['ngResource'])
 
-
-	app.config(function($routeProvider){
-		$routeProvider
-				.when('/',{
-					controller: "showAllQuestionsController",
-					templateUrl: "partials/showAllQuestions.html"
-				})
-				.when('/showQuestion',{
-					controller: "showQuestionController",
-					templateUrl: "partials/showQuestion.html"
-				})
-				.when('/addQuestion',{
-					controller: "addQuestionsController",
-					templateUrl: "partials/addQuestion.html"
-				})
-				.otherwise({redirectTo: "/"})
-	})
-
-	app.factory('questionService', function($resource){
-		return $resource('/rest/questions/:id', {id:'@id'}, {
-			update: {
-				method: 'PUT'
-			}
-		})
-	})
-
-	app.controller("showAllQuestionsController", function($scope, questionService){
-
-		questionService.query(function(data){
-			console.log("data", data)
-			$scope.questions = data
-		})
-	})
-
-	app.controller("showQuestionController", function($scope, questionService){
-		function getRandomQuestion(callback){
-			questionService.query(function(questions){
-				var hard = questions.filter(function(question){
-							return question.difficulty == "hard"
-						}),
-					medium = questions.filter(function(question){
-							return question.difficulty == "medium"
-						}),
-					easy = questions.filter(function(question){
-							return question.difficulty == "easy"
-						}),
-					all = hard.add(medium).add(easy)
-
-				if (all.length >= questionSetSize){
-					return all.at(0, questionSetSize)[0]
-				} else {
-					return all[0]
+	app.factory('ruter', function ($resource) {
+		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/3011401', {},
+				{
+					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
 				}
+		);
+	});
 
-
-
-			})
-		}
-		getRandomQuestion(function(data){
-			$scope.question = data
+	app.controller("issuesController", function($scope, ruter){
+		ruter.query(function(data){
+			console.log("getting data data", data)
+			$scope.data = data
 		})
-
-		$scope.finishQuestion = function(difficutly){
-			var question = $scope.question
-
-			question.difficulty = difficutly
-			question.$update()
-		}
-
 	})
-
-
-	app.controller("addQuestionsController", function($scope, questionService){
-		$scope.addedQuestions = []
-		$scope.saveQuestion = function(){
-
-			console.log("inside saveQuestion")
-			var question = new questionService({
-				text: $scope.questionText,
-				answer: $scope.answer,
-				waitUntil: Date.create().toISOString()
-			})
-
-			console.log("question", question)
-			question.$save()
-
-			$scope.addedQuestions.push(question)
-		}
-	})
-
 
 </script>
 </body>
