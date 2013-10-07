@@ -10,13 +10,20 @@
 <body ng-app="testApp">
 <div ng-controller="issuesController">
 	<ul>
-		<li ng-repeat="d in data">{{d}}</li>
+		<li ng-repeat="d in data | orderBy:AimedDepartureTime ">{{ d.PublishedLineName }}{{ d.DestinationDisplay }}: {{d.AimedDepartureTime | ruterDateToDate |date:'HH:mm:ss'}} ({{ d.Extensions.OccupancyData.OccupancyPercentage}}%)</li>
 	</ul>
 	<input ng-model="name">
 </div>
 <script>
 	var app = angular.module('testApp', ['ngResource'])
 
+	app.filter('ruterDateToDate', function() {
+		return function(string){
+			var m = string.match(/\d+/)
+			return m ? m[0] : string
+		};
+	});
+	
 	app.factory('ruter', function ($resource) {
 		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/3011401', {},
 				{
