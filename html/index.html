@@ -10,9 +10,9 @@
 </head>
 <body ng-app="testApp">
 <div ng-controller="issuesController">
-	<ul>
-		<li ng-repeat="d in data | orderBy:'AimedDepartureTime' ">{{ d.PublishedLineName }}{{ d.DestinationDisplay }}: {{d.AimedDepartureTime}} ({{ d.Extensions.OccupancyData.OccupancyPercentage}}%)<li>
-	</ul>
+	<table>
+		<tr ng-repeat="d in data | orderBy:'AimedDepartureTime' "><td>{{ d.PublishedLineName }}</td><td>{{ d.DestinationDisplay }}:</td><td>{{d.AimedDepartureTime}}</td><td> ({{ d.Extensions.OccupancyData.OccupancyPercentage}}%)</td><tr>
+	</table>
 	<input ng-model="name">
 </div>
 <script>
