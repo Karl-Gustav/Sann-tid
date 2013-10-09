@@ -27,7 +27,7 @@
 		}
 	});
 	
-	app.factory('ruter', function ($resource) {
+	app.factory('ruterResource', function ($resource) {
 		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/3011401', {},
 				{
 					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
@@ -35,8 +35,8 @@
 		);
 	});
 
-	app.controller("issuesController", function($scope, ruter, aspNetDateToMoment){
-		ruter.query(function(data){
+	app.controller("issuesController", function($scope, ruterResource, aspNetDateToMoment){
+		ruterResource.query(function(data){
 			console.log("getting data data", data)
 			data.each(function(el){
 				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
