@@ -1,5 +1,5 @@
 application: our-lists
-version: v1-4-1
+version: ruter
 runtime: python27
 api_version: 1
 threadsafe: true
