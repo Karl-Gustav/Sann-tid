@@ -69,12 +69,14 @@
 			data.each(function(el){
 				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
 			})
-			$scope.data = data
+			$scope.data = data.filter(function(el){
+				return el.AimedDepartureTime >= 0
+			})
 			$scope.stopName = $routeParams.stopName
 			function updateData(){
 				$timeout(function(){
-					$scope.data.each(function(el){
-						el.AimedDepartureTime -= 1
+					$scope.data = $scope.data.filter(function(el){
+						return --el.AimedDepartureTime >= 0
 					})
 					$scope.color = "Yellow"
 					updateData()
