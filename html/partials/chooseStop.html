@@ -2,5 +2,5 @@
 Stopp navn: <input ng-model="name"><button>S&oslash;k</button>
 </form>
 <ul>
-	<li ng-repeat="stop in data"><a href="#/showRealtime/{{ stop.ID }}">{{ stop.Name }}</a></li>
+	<li ng-repeat="stop in data"><a href="#/showRealtime/{{ stop.ID }}?stopName={{ stop.Name | urlEncode }}">{{ stop.Name }}</a></li>
 </ul>

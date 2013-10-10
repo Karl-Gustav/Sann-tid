@@ -33,7 +33,11 @@
 			templateUrl: "partials/showRealtime.html"
 		})
 		.otherwise({redirectTo: "/"})
-})
+	})
+
+	app.filter('urlEncode', function() {
+		return window.encodeURIComponent;
+	});
 
 	app.service('aspNetDateToMoment', function() {
 		this.convert = function(aspNetDate){
@@ -68,6 +72,7 @@
 				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
 			})
 			$scope.data = data
+			$scope.stopName = $routeParams.stopName
 			function updateData(){
 				$timeout(function(){
 					$scope.data.each(function(el){
