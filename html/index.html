@@ -16,11 +16,11 @@
 	app.config(function($routeProvider){
 	$routeProvider
 		.when('/',{
-			controller: "issuesController",
+			controller: "realtimeController",
 			templateUrl: "partials/chooseStop.html"
 		})
 		.when('/showRealtime/:stopId',{
-			controller: "issuesController",
+			controller: "realtimeController",
 			templateUrl: "partials/showRealtime.html"
 		})
 		.otherwise({redirectTo: "/"})
@@ -43,7 +43,7 @@
 		);
 	});
 
-	app.controller("issuesController", function($scope, $routeParams, realtimeResource, aspNetDateToMoment){
+	app.controller("realtimeController", function($scope, $routeParams, realtimeResource, aspNetDateToMoment){
 		realtimeResource.query(function(data){
 			console.log("$routeParams.stopId:",$routeParams.stopId)
 			console.log("getting data data", data)
