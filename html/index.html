@@ -66,8 +66,6 @@
 	
 	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, aspNetDateToMoment){
 		realtimeResource.query(function(data){
-			console.log("$routeParams.stopId:",$routeParams.stopId)
-			console.log("getting data data", data)
 			data.each(function(el){
 				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
 			})
