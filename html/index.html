@@ -16,7 +16,7 @@
 	app.config(function($routeProvider){
 	$routeProvider
 		.when('/',{
-			controller: "realtimeController",
+			controller: "findStopController",
 			templateUrl: "partials/chooseStop.html"
 		})
 		.when('/showRealtime/:stopId',{
@@ -43,7 +43,26 @@
 		);
 	});
 
+	app.factory('findPlaceResource', function ($resource) {
+		return $resource('http://reis.trafikanten.no/ReisRest/Place/FindMatches/:placeName', {},
+				{
+					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
+				}
+		);
+	});
+	
 	app.controller("realtimeController", function($scope, $routeParams, realtimeResource, aspNetDateToMoment){
+		realtimeResource.query(function(data){
+			console.log("$routeParams.stopId:",$routeParams.stopId)
+			console.log("getting data data", data)
+			data.each(function(el){
+				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
+			})
+			$scope.data = data
+		})
+	})
+	
+	app.controller("findStopController", function($scope, $routeParams, realtimeResource, aspNetDateToMoment){
 		realtimeResource.query(function(data){
 			console.log("$routeParams.stopId:",$routeParams.stopId)
 			console.log("getting data data", data)
