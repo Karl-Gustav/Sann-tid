@@ -1,5 +1,6 @@
-
-choose stop<input ng-model="name"><button ng-click="search()">Search</button>
+<form ng-submit="search()">
+Stopp navn: <input ng-model="name"><button>S&oslash;k</button>
+</form>
 <ul>
-	<li ng-repeat="d in data">{{d.name}}</li>
+	<li ng-repeat="stop in data"><a href="#/showRealtime/{{ stop.ID }}">{{ stop.Name }}</a></li>
 </ul>
