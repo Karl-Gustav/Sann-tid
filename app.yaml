@@ -1,4 +1,4 @@
-application: our-lists
+application: sann-tid
 version: ruter
 runtime: python27
 api_version: 1
@@ -25,7 +25,3 @@ handlers:
 - url: /
   static_files: html/index.html
   upload: html/index.html
-  login: required
-  
-- url: /.*
-  script: main.app
