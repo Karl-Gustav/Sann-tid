@@ -16,6 +16,7 @@
 	}
 	a{
 		color: #68b6db;
+		text-decoration: underline;
 	}
 </style>
 <body ng-app="testApp">
@@ -73,13 +74,16 @@
 			$scope.data = data.filter(function(el){
 				return el.AimedDepartureTime >= 0
 			})
+			$scope.updateTime = new Date()
 			$scope.stopName = $routeParams.stopName
+			$scope.minutesSinceUpdate = 0
 			function updateData(){
 				$timeout(function(){
 					$scope.data = $scope.data.filter(function(el){
 						return --el.AimedDepartureTime >= 0
 					})
 					$scope.color = "Yellow"
+					$scope.minutesSinceUpdate += 1
 					updateData()
 				}, 60000)
 			}

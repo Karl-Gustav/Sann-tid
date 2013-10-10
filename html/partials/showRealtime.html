@@ -1,5 +1,5 @@
 <h3>{{stopName}}</h3>
-<a href="#/chooseStop">Velg stopp</a>
+<a href="#/chooseStop">Velg stopp</a><span style="margin-left: 20px; color: #8699a4;">Hentet data {{updateTime | date:'HH:mm'}} ({{ minutesSinceUpdate }} siden)</span>
 <table>
-		<tr ng-repeat="d in data | orderBy:'AimedDepartureTime' "><td>{{ d.PublishedLineName }}</td><td>{{ d.DestinationDisplay }}:</td><td style="color: {{ color }};">{{d.AimedDepartureTime}}</td><td> ({{ d.Extensions.OccupancyData.OccupancyPercentage}}%)</td><tr>
-	</table>
+	<tr ng-repeat="d in data | orderBy:'AimedDepartureTime' "><td>{{ d.PublishedLineName }}</td><td>{{ d.DestinationDisplay }}:</td><td style="color: {{ color }};">{{d.AimedDepartureTime}}</td><td> ({{ d.Extensions.OccupancyData.OccupancyPercentage}}%)</td><tr>
+</table>
