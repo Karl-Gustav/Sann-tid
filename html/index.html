@@ -62,15 +62,14 @@
 		})
 	})
 	
-	app.controller("findStopController", function($scope, $routeParams, realtimeResource, aspNetDateToMoment){
-		realtimeResource.query(function(data){
-			console.log("$routeParams.stopId:",$routeParams.stopId)
-			console.log("getting data data", data)
-			data.each(function(el){
-				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
+	app.controller("findStopController", function($scope, findPlaceResource){
+		$scope.search = function(){
+			findPlaceResource.query({placeName: $scope.name}, function(data){
+				console.log("$routeParams.stopId:",$routeParams.stopId)
+				console.log("getting data data", data)
+				$scope.data = data
 			})
-			$scope.data = data
-		})
+		}
 	})
 
 </script>

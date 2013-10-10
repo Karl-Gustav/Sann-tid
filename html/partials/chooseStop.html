@@ -1,4 +1,5 @@
 
-choose stop
-
-	<input ng-model="name">
+choose stop<input ng-model="name"><button ng-click="search()">Search</button>
+<ul>
+	<li ng-repeat="d in data">{{d.name}}</li>
+</ul>
