@@ -74,7 +74,7 @@
 			function updateData(){
 				$timeout(function(){
 					$scope.data.each(function(el){
-						el.AimedDepartureTime += 1
+						el.AimedDepartureTime -= 1
 					})
 					$scope.color = "Yellow"
 					updateData()
