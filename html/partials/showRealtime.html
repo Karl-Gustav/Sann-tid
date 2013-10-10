@@ -1,0 +1,3 @@
+	<table>
+		<tr ng-repeat="d in data | orderBy:'AimedDepartureTime' "><td>{{ d.PublishedLineName }}</td><td>{{ d.DestinationDisplay }}:</td><td>{{d.AimedDepartureTime}}</td><td> ({{ d.Extensions.OccupancyData.OccupancyPercentage}}%)</td><tr>
+	</table>

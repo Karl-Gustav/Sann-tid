@@ -9,14 +9,22 @@
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 </head>
 <body ng-app="testApp">
-<div ng-controller="issuesController">
-	<table>
-		<tr ng-repeat="d in data | orderBy:'AimedDepartureTime' "><td>{{ d.PublishedLineName }}</td><td>{{ d.DestinationDisplay }}:</td><td>{{d.AimedDepartureTime}}</td><td> ({{ d.Extensions.OccupancyData.OccupancyPercentage}}%)</td><tr>
-	</table>
-	<input ng-model="name">
-</div>
+<ng-view></ng-view>
 <script>
 	var app = angular.module('testApp', ['ngResource'])
+	
+	app.config(function($routeProvider){
+	$routeProvider
+		.when('/',{
+			controller: "issuesController",
+			templateUrl: "partials/showRealtime.html"
+		})
+		.when('/chooseStop',{
+			controller: "issuesController",
+			templateUrl: "partials/chooseStop.html"
+		})
+		.otherwise({redirectTo: "/"})
+})
 
 	app.service('aspNetDateToMoment', function() {
 		this.convert = function(aspNetDate){
