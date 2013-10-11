@@ -85,7 +85,7 @@
 			$scope.updateTime = moment()
 			realtimeResource.query({stopId: $routeParams.stopId}, function(data){
 				data.each(function(el){
-					el.AimedDepartureTime = dateService.aspNetDateToMoment(el.AimedDepartureTime)
+					el.ExpectedDepartureTime = dateService.aspNetDateToMoment(el.ExpectedDepartureTime)
 				})
 				$scope.data = data
 				$scope.updateTime = moment()
@@ -103,7 +103,7 @@
 				$scope.minutesSinceUpdate = now.diff($scope.updateTime, 'minutes')
 
 				$scope.data = $scope.data.filter(function(el){
-					return dateService.diffInMinutes(el.AimedDepartureTime) >= -1
+					return dateService.diffInMinutes(el.ExpectedDepartureTime) >= -1
 				})
 
 				if ($scope.minutesSinceUpdate >= 1) $scope.color = "Yellow"
