@@ -71,17 +71,27 @@
 		var timeout
 		$scope.stopName = $routeParams.stopName
 		$scope.minutesSinceUpdate = 0
-		realtimeResource.query({stopId: $routeParams.stopId}, function(data){
-			data.each(function(el){
-				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
+		$scope.refresh = function(){
+			$scope.minutesSinceUpdate = 0
+			realtimeResource.query({stopId: $routeParams.stopId}, function(data){
+				data.each(function(el){
+					el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
+				})
+				$scope.data = data.filter(function(el){
+					return el.AimedDepartureTime >= 0
+				})
+				$scope.updateTime = new Date()
+				updateTime()
 			})
-			$scope.data = data.filter(function(el){
-				return el.AimedDepartureTime >= 0
-			})
-			$scope.updateTime = new Date()
-			updateData()
-		})
-		function updateData(){
+		}
+		$scope.refresh()
+		if (/*@cc_on!@*/false) { // check for Internet Explorer
+			document.onfocusin = $scope.refresh
+		} else {
+			window.onfocus = $scope.refresh
+		}
+		
+		function updateTime(){
 			if (timeout) $timeout.cancel(timeout)
 			timeout = $timeout(function(){
 				$scope.data = $scope.data.filter(function(el){
@@ -89,7 +99,7 @@
 				})
 				$scope.color = "Yellow"
 				$scope.minutesSinceUpdate += 1
-				updateData()
+				updateTime()
 			}, 60000)
 		}
 	})
