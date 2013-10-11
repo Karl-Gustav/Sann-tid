@@ -42,14 +42,25 @@
 		return window.encodeURIComponent;
 	});
 
-	app.service('aspNetDateToMoment', function() {
-		this.convert = function(aspNetDate){
+	app.service('dateService', function() {
+		this.aspNetDateToMoment = function(aspNetDate){
 			return moment(aspNetDate)
 		};
-		this.diffInMinutes = function(whenTheBussLeaves){
-			return whenTheBussLeaves.diff(moment(), 'minutes')
+		this.diffInMinutes = function(timeInTheFuture){
+			var now = moment()
+			return timeInTheFuture.diff(now, 'minutes')
 		}
 	});
+
+	app.filter('diffInMinutes', function(dateService){
+		return dateService.diffInMinutes
+	})
+
+	app.filter('momentFormat', function(){
+		return function(momentInstance, format){
+			return momentInstance.format(format)
+		}
+	})
 	
 	app.factory('realtimeResource', function ($resource) {
 		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/:stopId', {},
@@ -67,40 +78,38 @@
 		);
 	});
 	
-	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, aspNetDateToMoment){
+	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, dateService){
 		var timeout
 		$scope.stopName = $routeParams.stopName
-		$scope.minutesSinceUpdate = 0
 		$scope.refresh = function(){
-			$scope.minutesSinceUpdate = 0
+			$scope.updateTime = moment()
 			realtimeResource.query({stopId: $routeParams.stopId}, function(data){
 				data.each(function(el){
-					el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
+					el.AimedDepartureTime = dateService.aspNetDateToMoment(el.AimedDepartureTime)
 				})
-				$scope.data = data.filter(function(el){
-					return el.AimedDepartureTime >= 0
-				})
-				$scope.updateTime = new Date()
+				$scope.data = data
+				$scope.updateTime = moment()
+				$scope.color = ""
 				updateTime()
 			})
 		}
 		$scope.refresh()
-		if (/*@cc_on!@*/false) { // check for Internet Explorer
-			document.onfocusin = $scope.refresh
-		} else {
-			window.onfocus = $scope.refresh
-		}
 		
 		function updateTime(){
 			if (timeout) $timeout.cancel(timeout)
 			timeout = $timeout(function(){
+				var now = moment()
+
+				$scope.minutesSinceUpdate = now.diff($scope.updateTime, 'minutes')
+
 				$scope.data = $scope.data.filter(function(el){
-					return --el.AimedDepartureTime >= 0
+					return dateService.diffInMinutes(el.AimedDepartureTime) >= -1
 				})
-				$scope.color = "Yellow"
-				$scope.minutesSinceUpdate += 1
-				updateTime()
-			}, 60000)
+
+				if ($scope.minutesSinceUpdate >= 1) $scope.color = "Yellow"
+				if ($scope.minutesSinceUpdate >= 5) $scope.refresh()
+				else updateTime()
+			}, 500)
 		}
 	})
 	
