@@ -20,6 +20,7 @@
 	}
 </style>
 <body ng-app="testApp">
+<h1>&lt;BETA&gt;</h1>
 <ng-view></ng-view>
 <script>
 	var app = angular.module('testApp', ['ngResource'])
@@ -51,7 +52,7 @@
 	});
 	
 	app.factory('realtimeResource', function ($resource) {
-		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/3011401', {},
+		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/:stopId', {},
 				{
 					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
 				}
@@ -67,7 +68,7 @@
 	});
 	
 	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, aspNetDateToMoment){
-		realtimeResource.query(function(data){
+		realtimeResource.query({stopId: $routeParams.stopId}, function(data){
 			data.each(function(el){
 				el.AimedDepartureTime = aspNetDateToMoment.diffInMinutes(aspNetDateToMoment.convert(el.AimedDepartureTime))
 			})
