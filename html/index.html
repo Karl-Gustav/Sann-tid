@@ -92,6 +92,8 @@
 				$scope.updateTime = moment()
 				$scope.color = ""
 				updateTime()
+			}, function(errorResult){
+				console.log("Refresh query failed:", errorResult)
 			})
 		}
 		$scope.refresh()
@@ -104,6 +106,7 @@
 				$scope.minutesSinceUpdate = now.diff($scope.updateTime, 'minutes')
 
 				if ($scope.minutesSinceUpdate >= 1) $scope.color = "Yellow"
+
 				if ($scope.minutesSinceUpdate >= 3) $scope.refresh()
 				else updateTime()
 			}, 500)
