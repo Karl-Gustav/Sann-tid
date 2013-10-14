@@ -103,10 +103,6 @@
 
 				$scope.minutesSinceUpdate = now.diff($scope.updateTime, 'minutes')
 
-				$scope.data = $scope.data.filter(function(el){
-					return dateService.diffInMinutes(el.ExpectedDepartureTime) >= -1
-				})
-
 				if ($scope.minutesSinceUpdate >= 1) $scope.color = "Yellow"
 				if ($scope.minutesSinceUpdate >= 5) $scope.refresh()
 				else updateTime()
