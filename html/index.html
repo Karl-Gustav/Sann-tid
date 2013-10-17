@@ -51,6 +51,11 @@
 			var now = moment()
 			return timeInTheFuture.diff(now, 'minutes')
 		}
+		this.momentToMinutesAndSeconds = function(seconds){
+			var minutes = Math.floor(seconds / 60);
+			var remainingSeconds = time - minutes * 60;
+			return [minutes, remainingSeconds]
+		}
 	});
 
 	app.filter('diffInMinutes', function(dateService){
