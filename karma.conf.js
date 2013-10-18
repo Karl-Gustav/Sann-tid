@@ -14,7 +14,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'javascript/*.js'
+		'javascript/lib/sugarjs-1.3.9/sugar.min.js',
+		'javascript/lib/angular-1.0.8/angular.min.js',
+		'javascript/lib/angular-1.0.8/angular-resource.js',
+		'javascript/lib/angular-1.0.8/angular-mocks.js',
+		'javascript/main.js',
+		'javascript/*.js',
+		'html/index.html'
     ],
 
 
