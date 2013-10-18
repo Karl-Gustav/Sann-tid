@@ -126,13 +126,12 @@
 		function updateTime(){
 			if (timeout) $timeout.cancel(timeout)
 			timeout = $timeout(function(){
-				var now = moment()
+				var now = moment(),
+					secondsSinceUpdate = now.diff($scope.updateTime, 'seconds')
 
-				$scope.minutesSinceUpdate = now.diff($scope.updateTime, 'minutes')
+				if (secondsSinceUpdate >= 30) $scope.color = "Yellow"
 
-				if ($scope.minutesSinceUpdate >= 1) $scope.color = "Yellow"
-
-				if ($scope.minutesSinceUpdate >= 3) $scope.refresh()
+				if (secondsSinceUpdate >= 180) $scope.refresh()
 				else updateTime()
 			}, 500)
 		}
