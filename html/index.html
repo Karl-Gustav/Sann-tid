@@ -55,11 +55,15 @@
 			var now = moment()
 			return timeInTheFuture.diff(now, 'seconds')
 		}
-		this.momentToMinutesAndSeconds = function(momentTime){
-			var seconds = Math.abs(momentTime.diff(moment(), 'seconds'))
+		this.momentToMinutesAndSeconds = function(momentTime, absoluteDiff){
+			var seconds = momentTime.diff(moment(), 'seconds')
 				minutes = Math.floor(seconds / 60),
 				remainingSeconds = seconds - minutes * 60;
-			return [minutes, remainingSeconds]
+			if (absoluteDiff){
+				return [Math.abs(minutes), Math.abs(remainingSeconds)]
+			} else {
+				return [minutes, remainingSeconds]
+			}
 		}
 	});
 
@@ -70,8 +74,8 @@
 	})
 
 	app.filter('prettyPrintDiff', function(dateService){
-		return function(momentInstance){
-			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance),
+		return function(momentInstance, absoluteDiff){
+			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance, absoluteDiff),
 				minutes = secAndMin[0],
 				seconds = secAndMin[1]
 			console.log("secAndMin", secAndMin)
