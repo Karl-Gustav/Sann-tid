@@ -55,15 +55,11 @@
 			var now = moment()
 			return timeInTheFuture.diff(now, 'seconds')
 		}
-		this.momentToMinutesAndSeconds = function(momentTime, absoluteDiff){
+		this.momentToMinutesAndSeconds = function(momentTime){
 			var seconds = momentTime.diff(moment(), 'seconds')
-				minutes = Math.floor(seconds / 60),
-				remainingSeconds = seconds - minutes * 60;
-			if (absoluteDiff){
-				return [Math.abs(minutes), Math.abs(remainingSeconds)]
-			} else {
-				return [minutes, remainingSeconds]
-			}
+				minutes = ~~(seconds / 60),
+				remainingSeconds = seconds % 60;
+			return [minutes, remainingSeconds]
 		}
 	});
 
@@ -73,18 +69,34 @@
 		}
 	})
 
-	app.filter('prettyPrintDiff', function(dateService){
-		return function(momentInstance, absoluteDiff){
-			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance, absoluteDiff),
-				minutes = secAndMin[0],
-				seconds = secAndMin[1]
-			console.log("secAndMin", secAndMin)
-			console.log("momentInstance", momentInstance)
+	app.filter('prettyPrintDiffFuture', function(dateService){
+		return function(momentInstance){
+			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance),
+					minutes = secAndMin[0],
+					seconds = secAndMin[1]
 			if (minutes == 0){
 				return seconds + " sekunder"
 			} else if (minutes < 5) {
 				return "{1} min {2} sek".assign(minutes, seconds)
 			} else if (minutes < 20) {
+				return minutes + " minutter"
+			} else {
+				return momentInstance.format('HH:mm')
+			}
+		}
+	})
+
+
+	app.filter('prettyPrintDiffPast', function(dateService){
+		return function(momentInstance){
+			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance),
+					minutes = Math.abs(secAndMin[0]),
+					seconds = Math.abs(secAndMin[1])
+			if (minutes == 0){
+				return seconds + " sekunder"
+			} else if (minutes > -5) {
+				return "{1} min {2} sek".assign(minutes, seconds)
+			} else if (minutes > -20) {
 				return minutes + " minutter"
 			} else {
 				return momentInstance.format('HH:mm')
