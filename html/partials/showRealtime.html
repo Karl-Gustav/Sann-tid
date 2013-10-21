@@ -4,6 +4,6 @@
 	<tr ng-repeat="d in data | orderBy:'ExpectedDepartureTime' ">
 		<td>{{ d.PublishedLineName }}</td>
 		<td>{{ d.DestinationDisplay }}:</td>
-		<td style="color: {{ color }};">{{d.ExpectedDepartureTime | prettyPrintDiffFuture}}</td>
+		<td style="color: {{ color }};"><span ng-show="!d.Monitored">ca </span>{{d.ExpectedDepartureTime | prettyPrintDiffFuture}}</td>
 	<tr>
 </table>
