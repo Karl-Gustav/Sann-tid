@@ -16,10 +16,17 @@
 		</ul>
 	</div>
 <script>
-	var app = angular.module('testApp', [])
+	var app = angular.module('testApp', ['ngResource']) //<-- important
 
+	app.factory('realtimeResource', function ($resource) {
+		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/:stopId', {},
+				{
+					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
+				}
+		);
+	});
 
-	function HelloCntl($scope) {
+	function HelloCntl($scope, realtimeResource) {
 		$scope.myList = ['1 var', '2 var', '3 var']
 	}
 </script>
