@@ -1,9 +1,0 @@
-<h3>{{stopName}}</h3><button ng-click="refresh()">Refresh</button> <a href="#/chooseStop" style="margin-left: 90px;">Velg stopp</a><br />
-<span style="color: #8699a4;">Hentet data {{updateTime | momentFormat:'HH:mm:ss'}} ({{ updateTime | prettyPrintDiffPast }} siden)</span>
-<table>
-	<tr ng-repeat="d in data | orderBy:'ExpectedDepartureTime' ">
-		<td>{{ d.PublishedLineName }}</td>
-		<td>{{ d.DestinationDisplay }}:</td>
-		<td style="color: {{ color }};"><span ng-show="!d.Monitored">ca </span>{{d.ExpectedDepartureTime | prettyPrintDiffFuture}}</td>
-	<tr>
-</table>

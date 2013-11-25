@@ -12,7 +12,7 @@
 <body ng-app="testApp">
 	<div ng-controller="HelloCntl">
 		<ul>
-			<li>{{myVar}}</li>
+			<li ng-repeat="myVar in myList">{{myVar}}</li>
 		</ul>
 	</div>
 <script>
@@ -20,7 +20,7 @@
 
 
 	function HelloCntl($scope) {
-
+		$scope.myList = ['1 var', '2 var', '3 var']
 	}
 </script>
 </body>
