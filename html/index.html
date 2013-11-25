@@ -12,7 +12,7 @@
 <body ng-app="testApp">
 	<div ng-controller="HelloCntl">
 		<ul>
-			<li ng-repeat="myVar in myList">{{myVar}}</li>
+			<li ng-repeat="t in data">{{t.LineRef}}-{{t.DestinationDisplay}}: {{t.ExpectedDepartureTime}}</li>
 		</ul>
 	</div>
 <script>
@@ -27,7 +27,9 @@
 	});
 
 	function HelloCntl($scope, realtimeResource) {
-		$scope.myList = ['1 var', '2 var', '3 var']
+		realtimeResource.query({stopId: 3011405}, function(data){
+			$scope.data = data
+		})
 	}
 </script>
 </body>
