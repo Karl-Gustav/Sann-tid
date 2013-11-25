@@ -5,6 +5,6 @@
 	<tr ng-repeat="d in data | orderBy:'ExpectedDepartureTime' ">
 		<td>{{ d.PublishedLineName }}</td>
 		<td>{{ d.DestinationDisplay }}:</td>
-		<td><span ng-show="!d.Monitored">ca </span>{{d.ExpectedDepartureTime }}</td>
+		<td><span ng-show="!d.Monitored">ca </span>{{d.myTime | momentFormat:'HH:mm:ss' }}</td>
 	<tr>
 </table>
