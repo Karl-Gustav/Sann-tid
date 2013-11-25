@@ -8,159 +8,18 @@
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.3.9/sugar.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min.js"></script>
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 </head>
-<style type="text/css" id="custom-background-css">
-	body{
-		background-color: #2980b9;
-		color: #ffffff;
-	}
-	a{
-		color: #68b6db;
-		text-decoration: underline;
-	}
-</style>
 <body ng-app="testApp">
-<h1>&lt;BETA&gt;</h1>
-<ng-view></ng-view>
+	<div ng-controller="HelloCntl">
+		Hello <print "something" from the controller her>!
+	</div>
 <script>
-	var app = angular.module('testApp', ['ngResource'])
-	
-	app.config(function($routeProvider){
-	$routeProvider
-		.when('/',{
-			controller: "findStopController",
-			templateUrl: "partials/chooseStop.html"
-		})
-		.when('/showRealtime/:stopId',{
-			controller: "realtimeController",
-			templateUrl: "partials/showRealtime.html"
-		})
-		.otherwise({redirectTo: "/"})
-	})
-
-	app.filter('urlEncode', function() {
-		return window.encodeURIComponent;
-	});
-
-	app.service('dateService', function() {
-		this.aspNetDateToMoment = function(aspNetDate){
-			return moment(aspNetDate)
-		};
-		this.diffInMinutes = function(timeInTheFuture){
-			var now = moment()
-			return timeInTheFuture.diff(now, 'minutes')
-		}
-		this.diffInSeconds = function(timeInTheFuture){
-			var now = moment()
-			return timeInTheFuture.diff(now, 'seconds')
-		}
-		this.momentToMinutesAndSeconds = function(momentTime){
-			var seconds = momentTime.diff(moment(), 'seconds')
-				minutes = ~~(seconds / 60),
-				remainingSeconds = seconds % 60;
-			return [minutes, remainingSeconds]
-		}
-	});
-
-	app.filter('momentFormat', function(){
-		return function(momentInstance, format){
-			return momentInstance.format(format)
-		}
-	})
-
-	app.filter('prettyPrintDiffFuture', function(dateService){
-		return function(momentInstance){
-			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance),
-					minutes = secAndMin[0],
-					seconds = secAndMin[1]
-			if (minutes == 0){
-				return seconds + " sekunder"
-			} else if (minutes < 5) {
-				return "{1} min {2} sek".assign(minutes, seconds)
-			} else if (minutes < 20) {
-				return minutes + " minutter"
-			} else {
-				return momentInstance.format('HH:mm')
-			}
-		}
-	})
+	var app = angular.module('testApp', [])
 
 
-	app.filter('prettyPrintDiffPast', function(dateService){
-		return function(momentInstance){
-			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance),
-					minutes = Math.abs(secAndMin[0]),
-					seconds = Math.abs(secAndMin[1])
-			if (minutes == 0){
-				return seconds + " sekunder"
-			} else if (minutes > -5) {
-				return "{1} min {2} sek".assign(minutes, seconds)
-			} else if (minutes > -20) {
-				return minutes + " minutter"
-			} else {
-				return momentInstance.format('HH:mm')
-			}
-		}
-	})
-	
-	app.factory('realtimeResource', function ($resource) {
-		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/:stopId', {},
-				{
-					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
-				}
-		);
-	});
+	function HelloCntl($scope) {
 
-	app.factory('findPlaceResource', function ($resource) {
-		return $resource('http://reis.trafikanten.no/ReisRest/Place/FindMatches/:placeName', {},
-				{
-					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
-				}
-		);
-	});
-	
-	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, dateService){
-		var timeout
-		$scope.stopName = $routeParams.stopName
-		$scope.refresh = function(){
-			$scope.updateTime = moment()
-			realtimeResource.query({stopId: $routeParams.stopId}, function(data){
-				data.each(function(el){
-					el.ExpectedDepartureTime = dateService.aspNetDateToMoment(el.ExpectedDepartureTime)
-				})
-				$scope.data = data
-				$scope.updateTime = moment()
-				$scope.color = ""
-				updateTime()
-			}, function(errorResult){
-				console.log("Refresh query failed:", errorResult)
-			})
-		}
-		$scope.refresh()
-		
-		function updateTime(){
-			if (timeout) $timeout.cancel(timeout)
-			timeout = $timeout(function(){
-				var now = moment(),
-					secondsSinceUpdate = now.diff($scope.updateTime, 'seconds')
-
-				if (secondsSinceUpdate >= 30) $scope.color = "Yellow"
-
-				if (secondsSinceUpdate >= 180) $scope.refresh()
-				else updateTime()
-			}, 500)
-		}
-	})
-	
-	app.controller("findStopController", function($scope, findPlaceResource){
-		$scope.search = function(){
-			findPlaceResource.query({placeName: $scope.name}, function(data){
-				$scope.data = data
-			})
-		}
-	})
-
+	}
 </script>
 </body>
 </html>
