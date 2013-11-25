@@ -1,0 +1,10 @@
+<h3>{{stopName}}</h3>
+<button ng-click="refresh()">Refresh</button><br />
+<a href="#/chooseStop" style="margin-left: 90px;">Velg stopp</a>
+<table>
+	<tr ng-repeat="d in data | orderBy:'ExpectedDepartureTime' ">
+		<td>{{ d.PublishedLineName }}</td>
+		<td>{{ d.DestinationDisplay }}:</td>
+		<td><span ng-show="!d.Monitored">ca </span>{{d.ExpectedDepartureTime }}</td>
+	<tr>
+</table>
