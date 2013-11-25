@@ -10,13 +10,22 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min.js"></script>
 </head>
 <body ng-app="testApp">
-	<div ng-controller="HelloCntl">
-		<ul>
-			<li ng-repeat="t in data">{{t.LineRef}}-{{t.DestinationDisplay}}: {{t.ExpectedDepartureTime}}</li>
-		</ul>
-	</div>
+<ng-view></ng-view>
 <script>
 	var app = angular.module('testApp', ['ngResource']) //<-- important
+
+	app.config(function($routeProvider){
+		$routeProvider
+				.when('/',{
+					controller: "findStopController",
+					templateUrl: "partials/chooseStop.html"
+				})
+				.when('/showRealtime/:stopId',{
+					controller: "realtimeController",
+					templateUrl: "partials/showRealtime.html"
+				})
+				.otherwise({redirectTo: "/"})
+	})
 
 	app.factory('realtimeResource', function ($resource) {
 		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/:stopId', {},
@@ -26,9 +35,24 @@
 		);
 	});
 
-	function HelloCntl($scope, realtimeResource) {
-		$scope.data = realtimeResource.query({stopId: 3011405})
-	}
+	app.factory('findPlaceResource', function ($resource) {
+		return $resource('http://reis.trafikanten.no/ReisRest/Place/FindMatches/:placeName', {},
+				{
+					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
+				}
+		);
+	});
+
+	app.controller("realtimeController", function($scope, realtimeResource, $routeParams){
+		var stopName = $routeParams.stopName
+		$scope.data = realtimeResource.query({stopId: $routeParams.stopId})
+	})
+
+	app.controller("findStopController", function($scope, findPlaceResource){
+		$scope.search = function(){
+			$scope.data = findPlaceResource.query({placeName: $scope.name})
+		}
+	})
 </script>
 </body>
 </html>
