@@ -43,6 +43,10 @@
 		);
 	});
 
+	app.filter('momentFormat', function(){
+		return <a function>
+	})
+
 	app.controller("realtimeController", function($scope, realtimeResource, $routeParams){
 		var stopName = $routeParams.stopName
 		$scope.data = realtimeResource.query({stopId: $routeParams.stopId})
