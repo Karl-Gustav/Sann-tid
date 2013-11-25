@@ -11,14 +11,16 @@
 </head>
 <body ng-app="testApp">
 	<div ng-controller="HelloCntl">
-		Hello {{name}}!
+		<ul>
+			<li>{{myVar}}</li>
+		</ul>
 	</div>
 <script>
 	var app = angular.module('testApp', [])
 
 
 	function HelloCntl($scope) {
-		$scope.name = 'World';
+
 	}
 </script>
 </body>
