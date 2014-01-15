@@ -1,3 +1,5 @@
+You can test the app here: http://sann-tid.appspot.com
+
 How to start the project server:
 ===============================
 
@@ -24,3 +26,5 @@ Advanced:
 3. Run this command in the project folder: `dev_appserver.py .`
 4. Access the webpage at http://localhost:8080
 5. To upload the project when you are done you need to edit the app.yaml file with your app-id and run the `appcfg.py update .` command
+
+
