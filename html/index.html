@@ -120,8 +120,8 @@
 		);
 	});
 	
-	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, dateService, $log){
-		var timeout
+	app.controller("realtimeController", function($scope, $routeParams, $interval, realtimeResource, dateService, $log){
+		var interval
 		$scope.stopName = $routeParams.stopName
 		$scope.refresh = function(){
 			$scope.updateTime = moment()
@@ -132,25 +132,25 @@
 				$scope.data = data
 				$scope.updateTime = moment()
 				$scope.color = ""
-				updateTime()
 			}, function(error){
 				$log.error("Refresh query failed:", error)
 			})
 		}
 		$scope.refresh()
-		
-		function updateTime(){
-			if (timeout) $timeout.cancel(timeout)
-			timeout = $timeout(function(){
-				var now = moment(),
-					secondsSinceUpdate = now.diff($scope.updateTime, 'seconds')
 
-				if (secondsSinceUpdate >= 30) $scope.color = "Yellow"
+		interval = $interval(function(){
+			var now = moment(),
+				secondsSinceUpdate = now.diff($scope.updateTime, 'seconds')
 
-				if (secondsSinceUpdate >= 180) $scope.refresh()
-				else updateTime()
-			}, 500)
-		}
+			if (secondsSinceUpdate >= 30) $scope.color = "Yellow"
+
+			if (secondsSinceUpdate >= 180) $scope.refresh()
+		}, 500)
+
+		$scope.$on('$destroy', function iVeBeenDismissed() {
+			$interval.cancel(interval)
+			$log.debug("destoryed the interval:", interval)
+		})
 	})
 	
 	app.controller("findStopController", function($scope, findPlaceResource){
