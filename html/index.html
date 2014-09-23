@@ -120,7 +120,7 @@
 		);
 	});
 	
-	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, dateService){
+	app.controller("realtimeController", function($scope, $routeParams, $timeout, realtimeResource, dateService, $log){
 		var timeout
 		$scope.stopName = $routeParams.stopName
 		$scope.refresh = function(){
@@ -133,8 +133,8 @@
 				$scope.updateTime = moment()
 				$scope.color = ""
 				updateTime()
-			}, function(errorResult){
-				console.log("Refresh query failed:", errorResult)
+			}, function(error){
+				$log.error("Refresh query failed:", error)
 			})
 		}
 		$scope.refresh()
