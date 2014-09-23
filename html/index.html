@@ -16,9 +16,12 @@
 		background-color: #2980b9;
 		color: #ffffff;
 	}
-	a{
+	.regular-link {
 		color: #68b6db;
 		text-decoration: underline;
+	}
+	.alert {
+		margin: 20px;
 	}
 </style>
 <body ng-app="testApp">
@@ -126,6 +129,11 @@
 		$scope.refresh = function(){
 			$scope.updateTime = moment()
 			realtimeResource.query({stopId: $routeParams.stopId}, function(data){
+				if (data.length == 0) {
+					$scope.error = "Got no departures back from the system, this either means that there is no departures " +
+							"at this time (if it is late in the evening) or that this stop has no departures. In either case " +
+							"you should go back and select anoter stop."
+				}
 				data.each(function(el){
 					el.ExpectedDepartureTime = dateService.aspNetDateToMoment(el.ExpectedDepartureTime)
 				})
@@ -133,6 +141,7 @@
 				$scope.updateTime = moment()
 				$scope.color = ""
 			}, function(error){
+				$scope.error = error
 				$log.error("Refresh query failed:", error)
 			})
 		}

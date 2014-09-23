@@ -1,4 +1,9 @@
-<h3>{{stopName}}</h3><button ng-click="refresh()">Refresh</button> <a href="#/chooseStop" style="margin-left: 90px;">Velg stopp</a><br />
+
+<div ng-if="error" class="alert alert-warning">
+	<a href="#" class="close" data-dismiss="alert">&times;</a>
+	<strong>Warning!</strong> {{error}}
+</div>
+<h3>{{stopName}}</h3><button ng-click="refresh()">Refresh</button> <a class="regular-link" href="#/chooseStop" style="margin-left: 90px;">Velg stopp</a><br />
 <span style="color: #8699a4;">Hentet data {{updateTime | momentFormat:'HH:mm:ss'}} ({{ updateTime | prettyPrintDiffPast }} siden)</span>
 <table>
 	<tr ng-repeat="d in data | orderBy:'ExpectedDepartureTime' ">
