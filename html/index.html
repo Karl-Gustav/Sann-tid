@@ -136,9 +136,9 @@ Your browser is WAY to old to be surfing the web...
 			$scope.updateTime = moment()
 			realtimeResource.query({stopId: $routeParams.stopId}, function(data){
 				if (data.length == 0) {
-					$scope.error = "Got no departures back from the system, this either means that there is no departures " +
-							"at this time (if it is late in the evening) or that this stop has no departures. In either case " +
-							"you should go back and select anoter stop."
+					$scope.error = "Ruter har ingen avganger ifra dette stoppet for øyeblikket. Dette kan " +
+							"være på grunn av tidspunktet (send på kvelden) eller at dette stoppet aldri har avganger. " +
+							"Uansett så bør du gå tilbake og søke opp et annet stopp."
 				}
 				data.each(function(el){
 					el.ExpectedDepartureTime = dateService.aspNetDateToMoment(el.ExpectedDepartureTime)
