@@ -172,6 +172,9 @@ Your browser is WAY to old to be surfing the web...
 		$scope.search = function(){
 			findPlaceResource.query({placeName: $scope.name}, function(data){
 				$scope.data = data
+			}, function(error){
+				$scope.error = error
+				$log.error("Find stop query failed:", error)
 			})
 		}
 	})
