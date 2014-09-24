@@ -162,7 +162,7 @@ Your browser is WAY to old to be surfing the web...
 			if (secondsSinceUpdate >= 180) $scope.refresh()
 		}, 500)
 
-		$scope.$on('$destroy', function iVeBeenDismissed() {
+		$scope.$on('$destroy', function () {
 			$interval.cancel(interval)
 			$log.debug("destoryed the interval:", interval)
 		})
