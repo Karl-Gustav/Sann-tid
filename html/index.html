@@ -39,7 +39,8 @@ Your browser is WAY to old to be surfing the web...
 	$routeProvider
 		.when('/',{
 			controller: "findStopController",
-			templateUrl: "partials/chooseStop.html"
+			templateUrl: "partials/chooseStop.html",
+			reloadOnSearch: false
 		})
 		.when('/showRealtime/:stopId',{
 			controller: "realtimeController",
@@ -168,9 +169,11 @@ Your browser is WAY to old to be surfing the web...
 		})
 	})
 	
-	app.controller("findStopController", function($scope, findPlaceResource){
+	app.controller("findStopController", function($scope, findPlaceResource, $location){
+		$scope.name = $location.search().query
 		$scope.search = function(){
-			findPlaceResource.query({placeName: $scope.name}, function(data){
+			$location.search('query', $scope.name)
+			findPlaceResource.query({placeName: $location.search().query}, function(data){
 				$scope.data = data
 			}, function(error){
 				$scope.error = error
