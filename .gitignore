@@ -3,3 +3,5 @@ index.yaml
 *~
 .hidden
 *.iml
+node_modules/
+dist/
