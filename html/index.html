@@ -10,178 +10,27 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/sugar/1.3.9/sugar.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min.js"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <!--[if lte IE 9]>
 Your browser is WAY to old to be surfing the web...
 <![endif]-->
-<style type="text/css" id="custom-background-css">
-	h3 a {
-		color: #ffffff;
-	}
-	body{
-		background-color: #2980b9;
-		color: #ffffff;
-	}
-	.regular-link {
-		color: #68b6db;
-		text-decoration: underline;
-	}
-	.alert {
-		margin: 20px;
-	}
-</style>
-<body ng-app="testApp">
+<body ng-app="app">
 <ng-view></ng-view>
-<script>
-	var app = angular.module('testApp', ['ngResource', 'ngRoute'])
-	
-	app.config(function($routeProvider){
-	$routeProvider
-		.when('/',{
-			controller: "findStopController",
-			templateUrl: "partials/chooseStop.html",
-			reloadOnSearch: false
-		})
-		.when('/showRealtime/:stopId',{
-			controller: "realtimeController",
-			templateUrl: "partials/showRealtime.html"
-		})
-		.otherwise({redirectTo: "/"})
-	})
 
-	app.filter('urlEncode', function() {
-		return window.encodeURIComponent;
-	});
+<script src="app/main.js"></script>
+<script src="app/routes.js"></script>
 
-	app.service('dateService', function() {
-		this.aspNetDateToMoment = function(aspNetDate){
-			return moment(aspNetDate)
-		};
-		this.diffInMinutes = function(timeInTheFuture){
-			var now = moment()
-			return timeInTheFuture.diff(now, 'minutes')
-		}
-		this.diffInSeconds = function(timeInTheFuture){
-			var now = moment()
-			return timeInTheFuture.diff(now, 'seconds')
-		}
-		this.momentToMinutesAndSeconds = function(momentTime){
-			var seconds = momentTime.diff(moment(), 'seconds')
-				minutes = ~~(seconds / 60),
-				remainingSeconds = seconds % 60;
-			return [minutes, remainingSeconds]
-		}
-	});
+<script src="app/controllers/findStopController.js"></script>
+<script src="app/controllers/realtimeController.js"></script>
 
-	app.filter('momentFormat', function(){
-		return function(momentInstance, format){
-			return momentInstance.format(format)
-		}
-	})
+<script src="app/filters/momentFormatFilter.js"></script>
+<script src="app/filters/prettyPrintDiffFutureFilter.js"></script>
+<script src="app/filters/prettyPrintDiffPastFilter.js"></script>
+<script src="app/filters/urlEncodeFilter.js"></script>
 
-	app.filter('prettyPrintDiffFuture', function(dateService){
-		return function(momentInstance){
-			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance),
-					minutes = secAndMin[0],
-					seconds = secAndMin[1]
-			if (minutes == 0){
-				return seconds + " sekunder"
-			} else if (minutes < 5) {
-				return "{1} min {2} sek".assign(minutes, seconds)
-			} else if (minutes < 20) {
-				return minutes + " minutter"
-			} else {
-				return momentInstance.format('HH:mm')
-			}
-		}
-	})
-
-
-	app.filter('prettyPrintDiffPast', function(dateService){
-		return function(momentInstance){
-			var secAndMin = dateService.momentToMinutesAndSeconds(momentInstance),
-					minutes = Math.abs(secAndMin[0]),
-					seconds = Math.abs(secAndMin[1])
-			if (minutes == 0){
-				return seconds + " sekunder"
-			} else if (minutes > -5) {
-				return "{1} min {2} sek".assign(minutes, seconds)
-			} else if (minutes > -20) {
-				return minutes + " minutter"
-			} else {
-				return momentInstance.format('HH:mm')
-			}
-		}
-	})
-	
-	app.factory('realtimeResource', function ($resource) {
-		return $resource('http://reis.trafikanten.no/ReisRest/RealTime/GetRealTimeData/:stopId', {},
-				{
-					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
-				}
-		);
-	});
-
-	app.factory('findPlaceResource', function ($resource) {
-		return $resource('http://reis.trafikanten.no/ReisRest/Place/FindMatches/:placeName', {},
-				{
-					query: { method: 'JSONP', isArray:true, params: {callback: 'JSON_CALLBACK'} }
-				}
-		);
-	});
-	
-	app.controller("realtimeController", function($scope, $routeParams, $interval, realtimeResource, dateService, $log){
-		var interval
-		$scope.stopName = $routeParams.stopName
-		$scope.refresh = function(){
-			$scope.updateTime = moment()
-			realtimeResource.query({stopId: $routeParams.stopId}, function(data){
-				if (data.length == 0) {
-					$scope.error = "Ruter har ingen avganger ifra dette stoppet for øyeblikket. Dette kan " +
-							"være på grunn av tidspunktet (send på kvelden) eller at dette stoppet aldri har avganger. " +
-							"Uansett så bør du gå tilbake og søke opp et annet stopp."
-				}
-				data.each(function(el){
-					el.ExpectedDepartureTime = dateService.aspNetDateToMoment(el.ExpectedDepartureTime)
-				})
-				$scope.data = data
-				$scope.updateTime = moment()
-				$scope.color = ""
-			}, function(error){
-				$scope.error = error
-				$log.error("Refresh query failed:", error)
-			})
-		}
-		$scope.refresh()
-
-		interval = $interval(function(){
-			var now = moment(),
-				secondsSinceUpdate = now.diff($scope.updateTime, 'seconds')
-
-			if (secondsSinceUpdate >= 30) $scope.color = "Yellow"
-
-			if (secondsSinceUpdate >= 180) $scope.refresh()
-		}, 500)
-
-		$scope.$on('$destroy', function () {
-			$interval.cancel(interval)
-			$log.debug("destoryed the interval:", interval)
-		})
-	})
-	
-	app.controller("findStopController", function($scope, findPlaceResource, $location){
-		$scope.name = $location.search().query
-		$scope.search = function(){
-			$location.search('query', $scope.name)
-			findPlaceResource.query({placeName: $location.search().query}, function(data){
-				$scope.data = data
-			}, function(error){
-				$scope.error = error
-				$log.error("Find stop query failed:", error)
-			})
-		}
-	})
-
-</script>
+<script src="app/services/dateService.js"></script>
+<script src="app/services/findPlaceResourceService.js"></script>
+<script src="app/services/realtimeResourceService.js"></script>
 </body>
 </html>

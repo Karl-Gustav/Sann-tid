@@ -1,0 +1,14 @@
+h3 a {
+    color: #ffffff;
+}
+body{
+    background-color: #2980b9;
+    color: #ffffff;
+}
+.regular-link {
+    color: #68b6db;
+    text-decoration: underline;
+}
+.alert {
+    margin: 20px;
+}
