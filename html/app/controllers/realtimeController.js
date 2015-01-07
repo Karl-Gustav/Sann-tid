@@ -11,7 +11,7 @@ angular.module('app').controller("realtimeController", function($scope, $routePa
                 "være på grunn av tidspunktet (send på kvelden) eller at dette stoppet aldri har avganger. " +
                 "Uansett så bør du gå tilbake og søke opp et annet stopp."
             }
-            data.each(function(el){
+            data.forEach(function(el){
                 el.ExpectedDepartureTime = dateService.aspNetDateToMoment(el.ExpectedDepartureTime)
             })
             $scope.data = data
