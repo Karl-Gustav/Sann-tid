@@ -3,7 +3,8 @@
 	<a href="#" class="close" data-dismiss="alert">&times;</a>
 	<strong>Advarsel!</strong> {{error}}
 </div>
-<h3>{{stopName}}</h3><button ng-click="refresh()">Refresh</button> <a class="regular-link" href="#/chooseStop" style="margin-left: 90px;">Velg stopp</a><br />
+<h3>{{stopName}}</h3><button class="btn btn-default" ng-click="refresh()">Refresh</button>
+<a class="btn btn-default" href="#/chooseStop" style="margin-left: 90px;">Velg stopp</a><br />
 <span style="color: #8699a4;">Hentet data {{updateTime | momentFormat:'HH:mm:ss'}} ({{ updateTime | prettyPrintDiffPast }} siden)</span>
 <table>
 	<tr ng-repeat="d in data | orderBy:'ExpectedDepartureTime' ">
