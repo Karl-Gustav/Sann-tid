@@ -1,5 +1,5 @@
 application: sann-tid
-version: test
+version: v2-0-1
 runtime: python27
 api_version: 1
 threadsafe: true
