@@ -8,7 +8,7 @@ angular.module('app').filter('prettyPrintDiffPast', function(dateService){
         if (minutes == 0){
             return seconds + " sekunder"
         } else if (minutes > -5) {
-            return "{1} min {2} sek".assign(minutes, seconds)
+            return minutes + " min " + seconds + " sek"
         } else if (minutes > -20) {
             return minutes + " minutter"
         } else {
