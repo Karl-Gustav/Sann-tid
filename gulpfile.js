@@ -1,30 +1,23 @@
-"use strict"
-
 'use strict';
 
 var gulp = require('gulp'),
 	$ = require('gulp-load-plugins')(),
+	del = require('del'),
 	sourceDir = './',
-	destDir = 'dist/',
-	config = 'app.yaml';
+	destDir = 'dist/';
 
 gulp.task('default', ['build']);
 
-gulp.task('build', function (cb) {
-	$.runSequence('clean-dist', [
-		'use-min'
-	],
-	cb)
-});
+gulp.task('build', ['use-min']);
 
-gulp.task('use-min', function(){
+gulp.task('use-min', ['clean-dist'], function(){
 	return gulp.src(
 		[
-				sourceDir + 'html/**/*.html',
-				sourceDir + 'html/images/*',
-				sourceDir + 'python/**/*.py',
-				sourceDir + 'app.yaml',
-				sourceDir + 'main.py'
+			sourceDir + 'html/**/*.html',
+			sourceDir + 'html/images/*',
+			sourceDir + '**/*.py',
+			sourceDir + 'app.yaml',
+			sourceDir + 'main.py'
 
 		],
 		{base: sourceDir})
@@ -36,11 +29,10 @@ gulp.task('use-min', function(){
 		.pipe(gulp.dest(destDir));
 })
 
-gulp.task('clean-dist', function () {
-	return gulp.src(destDir, {read: false})
-		.pipe($.clean({force: true}));
+gulp.task('clean-dist', function (cb) {
+	del(destDir,cb);
 });
 
 function isIndexHtml (file) {
-	return file.path.match('index\\.html$');
+	return !!file.path.match('index\\.html$');
 }
