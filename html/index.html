@@ -44,12 +44,19 @@
 	});
 
 	app.filter('momentFormat', function(){
-		return <a function>
+		return function(momentInstance, format){
+			return momentInstance.format(format)
+		}
 	})
 
 	app.controller("realtimeController", function($scope, realtimeResource, $routeParams){
 		var stopName = $routeParams.stopName
-		$scope.data = realtimeResource.query({stopId: $routeParams.stopId})
+		realtimeResource.query({stopId: $routeParams.stopId}, function(data){
+			data.each(function(d){
+				d.myTime = moment(d.ExpectedDepartureTime)
+			})
+			$scope.data = data
+		})
 	})
 
 	app.controller("findStopController", function($scope, findPlaceResource){
